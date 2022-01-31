@@ -1,5 +1,3 @@
-// const mongodb = require("mongodb");
-// const MongoClient = mongodb.MongoClient;
 const { ObjectID } = require('bson');
 const {MongoClient, ObjectId} = require('mongodb');
 
@@ -13,6 +11,7 @@ MongoClient.connect(connectionURL, {useNewUrlParser: true},(err,client)=>{
     }
 
     const db = client.db(databaseName);
+    //CRUD Operations
     // db.collection('users').insertOne({
     //     name: "Vivek",
     //     age: 23
@@ -98,11 +97,11 @@ MongoClient.connect(connectionURL, {useNewUrlParser: true},(err,client)=>{
     // }).catch((err)=>{
     //     console.log(err);
     // })
-    db.collection('users').deleteMany({
-        age: 22
-    }).then((result)=>{
-        console.log(result);
-    }).catch((err)=>{
-        console.log(err);
-    })
+    // db.collection('users').deleteMany({
+    //     age: 22
+    // }).then((result)=>{
+    //     console.log(result);
+    // }).catch((err)=>{
+    //     console.log(err);
+    // })
 })
