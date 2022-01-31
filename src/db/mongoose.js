@@ -4,32 +4,38 @@ mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api');
 
 const User = mongoose.model('User',{
     name: {
-        type: String
+        type: String,
+        trim: true
     },
     age: {
-        type: Number
+        type: Number,
+        validate: (value)=>{
+            if(!(value > 0 && value < 115)){
+                throw new Error("Age entered is incorrect!!!");
+            }
+        }
     }
 })
 
-const Task = mongoose.model('Task',{
-    description: {
-        type: String
-    },
-    isCompleted: {
-        type: Boolean
-    }
+// const Task = mongoose.model('Task',{
+//     description: {
+//         type: String
+//     },
+//     isCompleted: {
+//         type: Boolean
+//     }
+// })
+
+const userInstance = new User({
+    name: "Oldman",
+    age: 200
 })
 
-// const userInstance = new User({
-//     name: "Vicky",
-//     age: 22
-// })
-
-// userInstance.save().then((result)=>{
-//     console.log(result);
-// }).catch((err)=>{
-//     console.log(err);
-// })
+userInstance.save().then((result)=>{
+    console.log(result);
+}).catch((err)=>{
+    console.log(err);
+})
 
 //Task instance
 // const taskInstance = new Task({
