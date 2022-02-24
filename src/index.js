@@ -11,7 +11,7 @@ app.use(express.json());
 app.get('/users',(req,res)=>{
     User.find({}).then(users=>{
         if(!users){
-            res.status(404).send('Users not found!!!');
+            return res.status(404).send('Users not found!!!');
         }
         res.send(users);
     }).catch(e=>{
@@ -23,10 +23,9 @@ app.get('/users/:id',(req,res)=>{
     const _id = req.params.id;
     User.findById(_id).then(user=>{
         if(!user){
-            res.status(404).send('User not found!!!');
-        }else{
-            res.send(user);
+            return res.status(404).send('User not found!!!');
         }
+        res.send(user);
     }).catch(e=>{
         res.status(500).send(e.message);
     })
@@ -35,9 +34,8 @@ app.get('/users/:id',(req,res)=>{
 app.get('/tasks',(req,res)=>{
     Task.find({}).then(tasks=>{
         if(!tasks)
-            res.status(404).send('No tasks are present. Add your tasks.');
-        else
-            res.send(tasks);
+            return res.status(404).send('No tasks are present. Add your tasks.');
+        res.send(tasks);
     }).catch(e=>{
         res.status(500).send(e.message);
     })
@@ -47,9 +45,8 @@ app.get('/tasks/:id',(req,res)=>{
     const _id = req.params.id;
     Task.findById(_id).then(task=>{
         if(!task)
-            res.status(404).send('Requested task is not present!!!');
-        else
-            res.send(task);
+            return res.status(404).send('Requested task is not present!!!');
+        res.send(task);
     }).catch(e=>{
         res.status(500).send(e.message);
     })
