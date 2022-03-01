@@ -125,6 +125,21 @@ app.post('/tasks',async (req,res)=>{
     // })
 });
 
+app.patch('/user/:id',async (req,res)=>{
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['name','age','email','password'];
+    const isUpdateValid = updates.every(update => allowedUpdates.includes(update));
+    try{
+        if(!isUpdateValid) throw new Error('Invalid fields are tried to be updated.');
+        const user = await User.findByIdAndUpdate(req.params.id,req.body,{new: true, runValidators: true});
+        if(!user) res.status(404).send('User not found!!!');
+        res.send(user);
+    }
+    catch(e){
+        res.status(400).send(e.message);
+    }
+})
+
 app.listen(port,()=>{
     console.log("Node server started successfully at port: "+port);
 });
