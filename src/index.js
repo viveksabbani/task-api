@@ -138,6 +138,21 @@ app.patch('/user/:id',async (req,res)=>{
     catch(e){
         res.status(400).send(e.message);
     }
+});
+
+app.patch('/task/:id', async (req,res)=>{
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['description','isCompleted'];
+    const isUpdateValid = updates.every(update => allowedUpdates.includes(update));
+    try{
+        if(!isUpdateValid) throw new Error('Invalid fields were tried to be updated.');
+        const task = await Task.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
+        if(!task) res.status(404).send('task not found!!!');
+        res.send(task);
+    }
+    catch(e){
+        res.status(400).send(e.message);
+    }
 })
 
 app.listen(port,()=>{
