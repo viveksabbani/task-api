@@ -153,7 +153,29 @@ app.patch('/task/:id', async (req,res)=>{
     catch(e){
         res.status(400).send(e.message);
     }
-})
+});
+
+app.delete('/user/:id',async(req,res)=>{
+    try{
+        const deletedUser = await User.findByIdAndDelete(req.params.id);
+        if(!deletedUser) res.status(404).send('user not found!!!');
+        res.send(deletedUser);
+    }
+    catch(e){
+        res.status(500).send(e.message);
+    }
+});
+
+app.delete('/task/:id', async(req,res)=>{
+    try{
+        const deletedTask = await Task.findByIdAndDelete(req.params.id);
+        if(!deletedTask) res.status(404).send('Task not found!!!');
+        res.send(deletedTask);
+    }
+    catch(e){
+        res.status(500).send(e.message);
+    }
+});
 
 app.listen(port,()=>{
     console.log("Node server started successfully at port: "+port);
