@@ -1,8 +1,8 @@
-const { ObjectID } = require('bson');
+// const { ObjectID } = require('bson');
 const {MongoClient, ObjectId} = require('mongodb');
 
 const connectionURL = "mongodb://127.0.0.1:27017";
-const databaseName = "task-manager";
+const databaseName = "task-manager-api";
 
 MongoClient.connect(connectionURL, {useNewUrlParser: true},(err,client)=>{
     if(err){
@@ -12,14 +12,19 @@ MongoClient.connect(connectionURL, {useNewUrlParser: true},(err,client)=>{
 
     const db = client.db(databaseName);
     //CRUD Operations
-    // db.collection('users').insertOne({
-    //     name: "Vivek",
-    //     age: 23
-    // },(err,result)=>{
-    //     if(err)
-    //         return console.log("Unable to insert the document!");
-    //     console.log(result);
-    // })
+
+    const userArray = ['Zelensky','Putin','Biden','Olaf'];
+    userArray.map(user =>{
+        db.collection('users').insertOne({
+            name: user,
+            age: 50
+        },(err,result)=>{
+            if(err)
+                return console.log("Unable to insert the document!");
+            console.log(result);
+        })
+    })
+   
     // db.collection('tasks').insertOne({
     //     description: "Wake up early!",
     //     isCompleted: true
