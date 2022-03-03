@@ -68,7 +68,10 @@ userRouter.patch('/user/:id',async (req,res)=>{
     const isUpdateValid = updates.every(update => allowedUpdates.includes(update));
     try{
         if(!isUpdateValid) throw new Error('Invalid fields are tried to be updated.');
-        const user = await User.findByIdAndUpdate(req.params.id,req.body,{new: true, runValidators: true});
+        // const user = await User.findByIdAndUpdate(req.params.id,req.body,{new: true, runValidators: true}); mongoose middleware hooks won't work for findByIdAndUpdate method as it is old.
+        const user = await User.findById(req.params.id);
+        updates.forEach(update => user[update] = req.body[update]);
+        await user.save();
         if(!user) res.status(404).send('User not found!!!');
         res.send(user);
     }

@@ -13,17 +13,17 @@ MongoClient.connect(connectionURL, {useNewUrlParser: true},(err,client)=>{
     const db = client.db(databaseName);
     //CRUD Operations
 
-    const userArray = ['Zelensky','Putin','Biden','Olaf'];
-    userArray.map(user =>{
-        db.collection('users').insertOne({
-            name: user,
-            age: 50
-        },(err,result)=>{
-            if(err)
-                return console.log("Unable to insert the document!");
-            console.log(result);
-        })
-    })
+    // const userArray = ['Zelensky','Putin','Biden','Olaf'];
+    // userArray.map(user =>{
+    //     db.collection('users').insertOne({
+    //         name: user,
+    //         age: 50
+    //     },(err,result)=>{
+    //         if(err)
+    //             return console.log("Unable to insert the document!");
+    //         console.log(result);
+    //     })
+    // })
    
     // db.collection('tasks').insertOne({
     //     description: "Wake up early!",
