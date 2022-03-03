@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('../models/user');
 const userRouter = express.Router();
 
+//GET Routes
 userRouter.get('/users',async (req,res)=>{
     try{
         const users = await User.find({});
@@ -45,6 +46,8 @@ userRouter.get('/users/:id',async (req,res)=>{
     // })
 });
 
+
+//POST Routes
 userRouter.post('/users',async (req,res)=>{
     try{
         const newUser = new User(req.body);
@@ -62,6 +65,18 @@ userRouter.post('/users',async (req,res)=>{
     // });
 });
 
+userRouter.post('/user/login',async (req,res)=>{
+    try{
+        const user = await User.findByCredentials(req.body.email,req.body.password);
+        res.send(user);
+    }
+    catch(e){
+        res.status(400).send(e.message);
+    }
+    
+})
+
+//PATCH Routes
 userRouter.patch('/user/:id',async (req,res)=>{
     const updates = Object.keys(req.body);
     const allowedUpdates = ['name','age','email','password'];
@@ -80,6 +95,8 @@ userRouter.patch('/user/:id',async (req,res)=>{
     }
 });
 
+
+//DELETE Routes
 userRouter.delete('/user/:id',async(req,res)=>{
     try{
         const deletedUser = await User.findByIdAndDelete(req.params.id);

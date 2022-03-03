@@ -15,7 +15,7 @@ app.use(taskRouter);
 //     const encrptedPassword = await bcrypt.hash(password,8);
 //     console.log(password);
 //     console.log(encrptedPassword);
-//     console.log(await bcrypt.compare("somepasswords",encrptedPassword));
+//     console.log(await bcrypt.compare("somepassword",encrptedPassword));
 // }
 
 // myFunction();
