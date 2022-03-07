@@ -1,15 +1,33 @@
 const express = require('express');
 const User = require('../models/user');
+const auth = require('../middleware/auth');
 const userRouter = express.Router();
 
 //GET Routes
-userRouter.get('/users',async (req,res)=>{
+userRouter.get('/users',auth,async (req,res)=>{
     try{
         const users = await User.find({});
         if(!users){
             return res.status(404).send('Users are not found.');
         }
         res.send(users);
+    }
+    catch(e){
+        res.status(500).send(e.message);
+    }
+    // User.find({}).then(users=>{
+    //     if(!users){
+    //         return res.status(404).send('Users not found!!!');
+    //     }
+    //     res.send(users);
+    // }).catch(e=>{
+    //     res.status(500).send(e.message);
+    // })
+});
+
+userRouter.get('/users/me',auth,async (req,res)=>{
+    try{
+        res.send(req.user);
     }
     catch(e){
         res.status(500).send(e.message);
