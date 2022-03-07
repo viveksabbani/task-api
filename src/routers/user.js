@@ -49,10 +49,11 @@ userRouter.get('/users/:id',async (req,res)=>{
 
 //POST Routes
 userRouter.post('/users',async (req,res)=>{
+    const newUser = new User(req.body);
     try{
-        const newUser = new User(req.body);
         const result = await newUser.save();
-        res.status(201).send(result);    
+        const token = await newUser.generateJWTToken();
+        res.status(201).send({result,token});    
     }
     catch(e){
         res.status(500).send(e.message);
@@ -68,7 +69,8 @@ userRouter.post('/users',async (req,res)=>{
 userRouter.post('/user/login',async (req,res)=>{
     try{
         const user = await User.findByCredentials(req.body.email,req.body.password);
-        res.send(user);
+        const token = await user.generateJWTToken();
+        res.send({user,token});
     }
     catch(e){
         res.status(400).send(e.message);
