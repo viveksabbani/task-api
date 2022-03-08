@@ -42,27 +42,27 @@ userRouter.get('/users/me',auth,async (req,res)=>{
     // })
 });
 
-userRouter.get('/users/:id',async (req,res)=>{
-    try{
-        const _id = req.params.id;
-        const user = await User.findById(_id);
-        if(!user){
-            return res.status(404).send('User not found!!!');
-        }
-        res.send(user);
-    }
-    catch(e){
-        res.status(500).send(e.message);
-    }
-    // User.findById(_id).then(user=>{
-    //     if(!user){
-    //         return res.status(404).send('User not found!!!');
-    //     }
-    //     res.send(user);
-    // }).catch(e=>{
-    //     res.status(500).send(e.message);
-    // })
-});
+// userRouter.get('/users/:id',async (req,res)=>{
+//     try{
+//         const _id = req.params.id;
+//         const user = await User.findById(_id);
+//         if(!user){
+//             return res.status(404).send('User not found!!!');
+//         }
+//         res.send(user);
+//     }
+//     catch(e){
+//         res.status(500).send(e.message);
+//     }
+//     // User.findById(_id).then(user=>{
+//     //     if(!user){
+//     //         return res.status(404).send('User not found!!!');
+//     //     }
+//     //     res.send(user);
+//     // }).catch(e=>{
+//     //     res.status(500).send(e.message);
+//     // })
+// });
 
 
 //POST Routes
@@ -119,17 +119,17 @@ userRouter.post('/user/logoutAll',auth,async (req,res)=>{
 })
 
 //PATCH Routes
-userRouter.patch('/user/:id',async (req,res)=>{
+userRouter.patch('/user/me',auth,async (req,res)=>{
     const updates = Object.keys(req.body);
     const allowedUpdates = ['name','age','email','password'];
     const isUpdateValid = updates.every(update => allowedUpdates.includes(update));
     try{
         if(!isUpdateValid) throw new Error('Invalid fields are tried to be updated.');
         // const user = await User.findByIdAndUpdate(req.params.id,req.body,{new: true, runValidators: true}); mongoose middleware hooks won't work for findByIdAndUpdate method as it is old.
-        const user = await User.findById(req.params.id);
+        const user = req.user;
         updates.forEach(update => user[update] = req.body[update]);
         await user.save();
-        if(!user) res.status(404).send('User not found!!!');
+        // if(!user) res.status(404).send('User not found!!!');
         res.send(user);
     }
     catch(e){
@@ -139,11 +139,12 @@ userRouter.patch('/user/:id',async (req,res)=>{
 
 
 //DELETE Routes
-userRouter.delete('/user/:id',async(req,res)=>{
+userRouter.delete('/user/me',auth,async(req,res)=>{
     try{
-        const deletedUser = await User.findByIdAndDelete(req.params.id);
-        if(!deletedUser) res.status(404).send('user not found!!!');
-        res.send(deletedUser);
+        // const deletedUser = await User.findByIdAndDelete(req.params.id);
+        // if(!deletedUser) res.status(404).send('user not found!!!');
+        req.user.delete();
+        res.send(req.user);
     }
     catch(e){
         res.status(500).send(e.message);
