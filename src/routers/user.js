@@ -96,6 +96,28 @@ userRouter.post('/user/login',async (req,res)=>{
     
 })
 
+userRouter.post('/user/logout',auth,async (req,res)=>{
+    try{
+        req.user.tokens = req.user.tokens.filter((tokenObj)=> tokenObj.token !== req.token);
+        await req.user.save();
+        res.send('User logged out.')
+    }
+    catch(e){
+        res.status(500).send(e.message);
+    }
+})
+
+userRouter.post('/user/logoutAll',auth,async (req,res)=>{
+    try{
+        req.user.tokens = [];
+        await req.user.save();
+        res.send('All user sessions terminated');
+    }
+    catch(e){
+        res.status(500).send(e.message);
+    }
+})
+
 //PATCH Routes
 userRouter.patch('/user/:id',async (req,res)=>{
     const updates = Object.keys(req.body);
