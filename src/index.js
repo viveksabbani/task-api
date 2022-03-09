@@ -49,13 +49,13 @@ app.listen(port,()=>{
     console.log("Node server started successfully at port: "+port);
 });
 
-const myFunction = async () => {
-    // const task = await Task.findById('62283343c9594d1e04fa0b89');
-    // await task.populate('owner');
-    // console.log(task);
-    const user = await User.findById('62283327c9594d1e04fa0b80');
-    await user.populate('tasks');
-    console.log(user.tasks);
-}
+// const myFunction = async () => {
+//     // const task = await Task.findById('62283343c9594d1e04fa0b89');
+//     // await task.populate('owner');
+//     // console.log(task);
+//     const user = await User.findById('62283327c9594d1e04fa0b80');
+//     await user.populate('tasks');
+//     console.log(user.tasks);
+// }
 
-myFunction();
+// myFunction();
