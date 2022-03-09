@@ -1,5 +1,6 @@
 const express = require('express');
 const Task = require('../models/task');
+const auth = require('../middleware/auth');
 const taskRouter = express.Router();
 
 taskRouter.get('/tasks',async (req,res)=>{
@@ -44,9 +45,9 @@ taskRouter.get('/tasks/:id',async (req,res)=>{
 
 
 
-taskRouter.post('/tasks',async (req,res)=>{
+taskRouter.post('/tasks',auth,async (req,res)=>{
     try{
-        const newTask = new Task(req.body);
+        const newTask = new Task({...req.body , owner: req.user._id});
         const result = await newTask.save();
         res.status(201).send(result);
     }

@@ -7,6 +7,9 @@ require('./db/mongoose');
 const app = express();
 const port = process.env.PORT || 3000;
 
+const User = require('./models/user');
+const Task = require('./models/task');
+
 // app.use((req,res,next)=>{
 //     if(req.method === 'GET'){
 //         res.send('GET http method is disabled temporarily');
@@ -45,3 +48,14 @@ app.use(taskRouter);
 app.listen(port,()=>{
     console.log("Node server started successfully at port: "+port);
 });
+
+const myFunction = async () => {
+    // const task = await Task.findById('62283343c9594d1e04fa0b89');
+    // await task.populate('owner');
+    // console.log(task);
+    const user = await User.findById('62283327c9594d1e04fa0b80');
+    await user.populate('tasks');
+    console.log(user.tasks);
+}
+
+myFunction();

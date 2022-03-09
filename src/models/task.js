@@ -15,6 +15,10 @@ const Task = mongoose.model('Task',{
     isCompleted: {
         type: Boolean,
         default: false
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 });
 
