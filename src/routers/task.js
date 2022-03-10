@@ -5,8 +5,13 @@ const taskRouter = express.Router();
 
 taskRouter.get('/tasks',auth,async (req,res)=>{
     const match = {};
+    const sort = {};
     if(req.query.completed){
         match.completed = req.query.completed === 'true';
+    }
+    if(req.query.sort){
+        const parts = req.query.sort.split(':');
+        sort[parts[0]] = parts[1] === 'dsc'? -1: 1;
     }
     try{
         // const tasks = await Task.find({owner: req.user._id});
@@ -19,7 +24,8 @@ taskRouter.get('/tasks',auth,async (req,res)=>{
             match,
             options:{
                 limit: parseInt(req.query.limit),
-                skip: parseInt(req.query.skip)
+                skip: parseInt(req.query.skip),
+                sort
             }
         });
         res.send(req.user.tasks);
