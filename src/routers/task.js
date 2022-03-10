@@ -4,14 +4,21 @@ const auth = require('../middleware/auth');
 const taskRouter = express.Router();
 
 taskRouter.get('/tasks',auth,async (req,res)=>{
+    const match = {};
+    if(req.query.completed){
+        match.completed = req.query.completed === 'true';
+    }
     try{
-        const tasks = await Task.find({owner: req.user._id});
-        if(!tasks)
-            return res.status(404).send('No tasks are present. Add your tasks.');
-        res.send(tasks);
+        // const tasks = await Task.find({owner: req.user._id});
+        // if(!tasks)
+        //     return res.status(404).send('No tasks are present. Add your tasks.');
+        // res.send(tasks);
         //Alternative
-        // await req.user.populate('tasks');
-        // res.send(req.user.tasks);
+        await req.user.populate({
+            path: 'tasks',
+            match
+        });
+        res.send(req.user.tasks);
     }
     catch(e){
         res.status(500).send(e.message);
