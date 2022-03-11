@@ -45,6 +45,15 @@ app.use(taskRouter);
 
 // myFunction();
 
+// const multer = require('multer');
+// const upload = multer({dest: 'images'});
+
+// app.post('/upload',upload.single('image'),(req,res)=>{
+//     console.log(req.body);
+//     res.send();
+// })
+
+
 app.listen(port,()=>{
     console.log("Node server started successfully at port: "+port);
 });

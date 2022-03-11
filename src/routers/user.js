@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
 const userRouter = express.Router();
@@ -116,6 +117,25 @@ userRouter.post('/user/logoutAll',auth,async (req,res)=>{
     catch(e){
         res.status(500).send(e.message);
     }
+})
+
+const upload = multer({
+    dest: 'images',
+    limits: {
+        fileSize: 1000000
+    },
+    fileFilter: (req,file,cb)=>{
+        if(!file.originalname.match(/\.(jpg|jpeg|png)$/)){
+            return cb(new Error('Please upload only images!'));
+        }
+        cb(null,true);
+    }
+});
+
+userRouter.post('/users/me/avatar', auth, upload.single('avatar'), (req,res)=>{
+    res.send();
+},(err,req,res,next)=>{
+    res.status(400).send({error: err.message})
 })
 
 //PATCH Routes
