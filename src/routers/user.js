@@ -43,6 +43,20 @@ userRouter.get('/users/me',auth,async (req,res)=>{
     // })
 });
 
+userRouter.get('/users/:id/avatar',async (req,res)=>{
+    try{
+        const user = await User.findById(req.params.id);
+        if(!user || !user.avatar){
+            throw new Error();
+        }
+        res.set('Content-Type','image/jpg');
+        res.send(user.avatar);
+    }
+    catch(err){
+        res.status(404).send();
+    }
+})
+
 // userRouter.get('/users/:id',async (req,res)=>{
 //     try{
 //         const _id = req.params.id;
@@ -120,7 +134,6 @@ userRouter.post('/user/logoutAll',auth,async (req,res)=>{
 })
 
 const upload = multer({
-    dest: 'images',
     limits: {
         fileSize: 1000000
     },
@@ -132,11 +145,20 @@ const upload = multer({
     }
 });
 
-userRouter.post('/users/me/avatar', auth, upload.single('avatar'), (req,res)=>{
-    res.send();
+userRouter.post('/users/me/avatar', auth, upload.single('avatar'), async (req,res)=>{
+    req.user.avatar = req.file.buffer;
+    try{
+        await req.user.save();
+        res.send();
+    }
+    catch(err){
+        res.status(500).send(err.message);
+    }
 },(err,req,res,next)=>{
     res.status(400).send({error: err.message})
 })
+
+
 
 //PATCH Routes
 userRouter.patch('/user/me',auth,async (req,res)=>{
@@ -170,5 +192,16 @@ userRouter.delete('/user/me',auth,async(req,res)=>{
         res.status(500).send(e.message);
     }
 });
+
+userRouter.delete('/users/me/avatar',auth,async(req,res)=>{
+    try{
+        req.user.avatar = null;
+        await req.user.save();
+        res.send("Avatar is deleted.")
+    }
+    catch(err){
+        res.status(500).send(err.message);
+    }
+})
 
 module.exports = userRouter;
