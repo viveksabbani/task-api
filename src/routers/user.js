@@ -3,6 +3,7 @@ const multer = require('multer');
 const sharp = require('sharp');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
+const {sendWelcomeEmail, sendCancelationEmail} = require('../emails/sendgrid');
 const userRouter = express.Router();
 
 //GET Routes
@@ -86,6 +87,7 @@ userRouter.post('/users',async (req,res)=>{
     const newUser = new User(req.body);
     try{
         const result = await newUser.save();
+        sendWelcomeEmail(result.email,result.name);
         const token = await newUser.generateJWTToken();
         res.status(201).send({result,token});    
     }
@@ -187,7 +189,8 @@ userRouter.delete('/user/me',auth,async(req,res)=>{
     try{
         // const deletedUser = await User.findByIdAndDelete(req.params.id);
         // if(!deletedUser) res.status(404).send('user not found!!!');
-        req.user.delete();
+        await req.user.remove();
+        sendCancelationEmail(req.user.email,req.user.name);
         res.send(req.user);
     }
     catch(e){
