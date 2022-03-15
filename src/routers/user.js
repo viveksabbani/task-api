@@ -18,14 +18,6 @@ userRouter.get('/users',auth,async (req,res)=>{
     catch(e){
         res.status(500).send(e.message);
     }
-    // User.find({}).then(users=>{
-    //     if(!users){
-    //         return res.status(404).send('Users not found!!!');
-    //     }
-    //     res.send(users);
-    // }).catch(e=>{
-    //     res.status(500).send(e.message);
-    // })
 });
 
 userRouter.get('/users/me',auth,async (req,res)=>{
@@ -35,14 +27,6 @@ userRouter.get('/users/me',auth,async (req,res)=>{
     catch(e){
         res.status(500).send(e.message);
     }
-    // User.find({}).then(users=>{
-    //     if(!users){
-    //         return res.status(404).send('Users not found!!!');
-    //     }
-    //     res.send(users);
-    // }).catch(e=>{
-    //     res.status(500).send(e.message);
-    // })
 });
 
 userRouter.get('/users/:id/avatar',async (req,res)=>{
@@ -59,29 +43,6 @@ userRouter.get('/users/:id/avatar',async (req,res)=>{
     }
 })
 
-// userRouter.get('/users/:id',async (req,res)=>{
-//     try{
-//         const _id = req.params.id;
-//         const user = await User.findById(_id);
-//         if(!user){
-//             return res.status(404).send('User not found!!!');
-//         }
-//         res.send(user);
-//     }
-//     catch(e){
-//         res.status(500).send(e.message);
-//     }
-//     // User.findById(_id).then(user=>{
-//     //     if(!user){
-//     //         return res.status(404).send('User not found!!!');
-//     //     }
-//     //     res.send(user);
-//     // }).catch(e=>{
-//     //     res.status(500).send(e.message);
-//     // })
-// });
-
-
 //POST Routes
 userRouter.post('/users',async (req,res)=>{
     const newUser = new User(req.body);
@@ -94,12 +55,6 @@ userRouter.post('/users',async (req,res)=>{
     catch(e){
         res.status(500).send(e.message);
     }
-    // const newUser = new User(req.body);
-    // newUser.save().then((result)=>{
-    //     res.status(201).send(result);
-    // }).catch((e)=>{
-    //     res.status(400).send(e.message);
-    // });
 });
 
 userRouter.post('/user/login',async (req,res)=>{

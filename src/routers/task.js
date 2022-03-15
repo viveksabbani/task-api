@@ -33,13 +33,6 @@ taskRouter.get('/tasks',auth,async (req,res)=>{
     catch(e){
         res.status(500).send(e.message);
     }
-    // Task.find({}).then(tasks=>{
-    //     if(!tasks)
-    //         return res.status(404).send('No tasks are present. Add your tasks.');
-    //     res.send(tasks);
-    // }).catch(e=>{
-    //     res.status(500).send(e.message);
-    // })
 });
 
 taskRouter.get('/tasks/:id',auth,async (req,res)=>{
@@ -53,14 +46,6 @@ taskRouter.get('/tasks/:id',auth,async (req,res)=>{
     catch(e){
         res.status(500).send(e.message);
     }
-    // const _id = req.params.id;
-    // Task.findById(_id).then(task=>{
-    //     if(!task)
-    //         return res.status(404).send('Requested task is not present!!!');
-    //     res.send(task);
-    // }).catch(e=>{
-    //     res.status(500).send(e.message);
-    // })
 });
 
 
@@ -74,12 +59,6 @@ taskRouter.post('/tasks',auth,async (req,res)=>{
     catch(e){
         res.status(400).send(e.message);
     }
-    // const newTask = new Task(req.body);
-    // newTask.save().then((result)=>{
-    //     res.status(201).send(result);
-    // }).catch(e=>{
-    //     res.status(400).send(e.message);
-    // })
 });
 
 

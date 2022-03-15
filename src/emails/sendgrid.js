@@ -8,7 +8,6 @@ const sendWelcomeEmail = (email, name) =>{
         subject: "Thanks for joining in!",
         text: `Hi ${name}!. Welcome to task manager application. Hope you love using our application.`
     });
-    console.log("welcome email sent!!!")
 }
 
 const sendCancelationEmail = (email,name) =>{
