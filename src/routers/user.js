@@ -47,10 +47,10 @@ userRouter.get('/users/:id/avatar',async (req,res)=>{
 userRouter.post('/users',async (req,res)=>{
     const newUser = new User(req.body);
     try{
-        const result = await newUser.save();
-        sendWelcomeEmail(result.email,result.name);
+        const user = await newUser.save();
+        // sendWelcomeEmail(result.email,result.name);
         const token = await newUser.generateJWTToken();
-        res.status(201).send({result,token});    
+        res.status(201).send({user,token});    
     }
     catch(e){
         res.status(500).send(e.message);
@@ -140,12 +140,12 @@ userRouter.patch('/user/me',auth,async (req,res)=>{
 
 
 //DELETE Routes
-userRouter.delete('/user/me',auth,async(req,res)=>{
+userRouter.delete('/users/me',auth,async(req,res)=>{
     try{
         // const deletedUser = await User.findByIdAndDelete(req.params.id);
         // if(!deletedUser) res.status(404).send('user not found!!!');
         await req.user.remove();
-        sendCancelationEmail(req.user.email,req.user.name);
+        // sendCancelationEmail(req.user.email,req.user.name);
         res.send(req.user);
     }
     catch(e){
