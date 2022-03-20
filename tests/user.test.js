@@ -1,24 +1,11 @@
+const path = require('path');
 const request = require('supertest');
-const jwt = require('jsonwebtoken');
 const app = require('../src/app');
-const mongoose = require('mongoose');
-const User = require('../src/models/user');
-const bcrypt = require('bcryptjs/dist/bcrypt');
+const User = require(path.resolve('src/models/user'));
+const {testUser,testUserId,setupDatabase} = require(path.resolve('tests/fixtures','db'));
 
-const testUserId = new mongoose.Types.ObjectId();
-
-const testUser = {
-    _id: testUserId,
-    name: 'Vivek',
-    email : 'vsabb@gmail.com',
-    password: 'tennismaster123',
-    tokens: [{
-        token: jwt.sign({_id: testUserId}, process.env.JWT_SECURE_STRING)
-    }]
-}
 beforeEach(async ()=>{
-    await User.deleteMany();
-    await new User(testUser).save();
+    await setupDatabase();
 })
 
 afterEach(async ()=>{

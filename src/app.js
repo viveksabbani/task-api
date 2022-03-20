@@ -20,17 +20,3 @@ app.get("/",(req,res)=>{
 
 
 module.exports = app;
-// const celsiusToFarenheit = (temperature) => {
-//     return 1.8*temperature + 32;
-// }
-
-// const asyncCelsiusToFarenheit = async(temperature) => {
-//     return new Promise((res,rej)=>{
-//         setTimeout(() => {
-//             if(temperature < -273) rej('Temperature is less than absolute zero!!!');
-//             res(1.8*temperature+32);
-//         },2000)
-//     });
-// }
-
-// module.exports = {celsiusToFarenheit,asyncCelsiusToFarenheit};
