@@ -90,3 +90,37 @@ test('Should not delete user account without auth token', async()=>{
     const response = await request(app).delete('/users/me').send();
     expect(response.status).toBe(401);
 })
+
+test('Should upload user avatar', async()=>{
+    const response = await request(app).post('/users/me/avatar')
+                    .set('Authorization', `Bearer ${testUser.tokens[0].token}`)
+                    .attach('avatar','tests/fixtures/myself.jpg');
+    expect(response.status).toBe(200);
+    //Assert image uploaded is of data type buffer
+    const user = await User.findById(testUserId)
+    expect(user.avatar).toEqual(expect.any(Buffer));
+})
+
+test('Should update valid user field', async()=>{
+    const response = await request(app).patch('/users/me')
+                    .set('Authorization', `Bearer ${testUser.tokens[0].token}`)
+                    .send({
+                        name: 'vicky'
+                    });
+    expect(response.status).toBe(200);
+    //Assert user fields are updated
+    const user = await User.findById(testUserId);
+    expect(user.name).toBe('vicky');
+})
+
+test('Should not update invalid user fields', async()=>{
+    const response = await request(app).patch('/users/me')
+                    .set('Authorization',`Bearer ${testUser.tokens[0].token}`)
+                    .send({
+                        location: 'Hyderabad'
+                    });
+    expect(response.status).toBe(400);
+    //Assert location filed is not added/updated
+    const user = await User.findById(testUserId);
+    expect(user.location).toBeUndefined();
+})

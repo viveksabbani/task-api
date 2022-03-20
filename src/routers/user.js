@@ -48,7 +48,7 @@ userRouter.post('/users',async (req,res)=>{
     const newUser = new User(req.body);
     try{
         const user = await newUser.save();
-        // sendWelcomeEmail(result.email,result.name);
+        sendWelcomeEmail(user.email,user.name);
         const token = await newUser.generateJWTToken();
         res.status(201).send({user,token});    
     }
@@ -120,7 +120,7 @@ userRouter.post('/users/me/avatar', auth, upload.single('avatar'), async (req,re
 
 
 //PATCH Routes
-userRouter.patch('/user/me',auth,async (req,res)=>{
+userRouter.patch('/users/me',auth,async (req,res)=>{
     const updates = Object.keys(req.body);
     const allowedUpdates = ['name','age','email','password'];
     const isUpdateValid = updates.every(update => allowedUpdates.includes(update));
@@ -145,7 +145,7 @@ userRouter.delete('/users/me',auth,async(req,res)=>{
         // const deletedUser = await User.findByIdAndDelete(req.params.id);
         // if(!deletedUser) res.status(404).send('user not found!!!');
         await req.user.remove();
-        // sendCancelationEmail(req.user.email,req.user.name);
+        sendCancelationEmail(req.user.email,req.user.name);
         res.send(req.user);
     }
     catch(e){
